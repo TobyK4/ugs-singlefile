@@ -1,0 +1,483 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf8">
+        <title>PokéBox | Pokémon Box Simulator | v1.2.31</title>
+                    <meta name="robots" content="index,follow" />
+                <meta name="keywords" content="pokemon, pokemon simulator, pokemon eggs, pokemon breeding, pokemon evolution, pokemon biomes, pokemon types, baby pokemon" />
+        <meta name="description" content="PokéBox is a web-app that simulates the biomes, relationships, breeding, evolution, and life-cycles of every single official Pokémon and form (plus a few others).  Use type appeal to lure new and different species to your box on a quest to complete your Global Pokédex." />
+        <meta id="myViewport" name="viewport" content="width=device-width, initial-scale=1, min-width=524">
+        <base href="https://pokebox.net/" />
+        <link type="text/css" rel="stylesheet" href="styles/style-base.min.css?v1.2.31" />
+        <link type="text/css" rel="stylesheet" href="styles/jquery.scrollbar-mod.min.css?v1.2.31" />
+        <!--  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous"> -->
+        <link type="text/css" rel="stylesheet" href="styles/style-master.min.css?v1.2.31" />
+        <link type="text/css" rel="stylesheet" href="styles/style-responsive.min.css?v1.2.31" />
+        <link type="text/css" rel="stylesheet" href="styles/style-devices.min.css?v1.2.31" />
+        <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico?v1.2.31">
+                <!-- Google Analytics -->
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-117911952-1', 'auto');
+        ga('send', 'pageview');
+        </script>
+            </head>
+    <body data-speed="normal" data-mode="normal" data-running="false">
+                <div class="panel" data-view="simulator">
+
+            <div class="banner">
+                <div class="logo"><img src="images/pokebox-logo.png" alt="PokéBox" /></div>
+                <div class="subtext"><h1>Pokémon Box Simulator</h1></div>
+                <div class="version">
+                    v1.2.31                    <span class="bp bp1"></span>
+                    <span class="bp bp2"></span>
+                    <span class="bp bp3"></span>
+                    <span class="bp bp4"></span>
+                </div>
+                <div class="counter pokedex" title="Current Pokédex Completion">
+                    <img class="icon" src="images/pokeball.png" data-kind="base" />
+                    <span class="count">
+                        <span class="current">0</span>
+                        / <span class="total">0</span>
+                        <span class="percent">0%</span>
+                    </span>
+                </div>
+                <div class="counter timer" title="Total Days Passed">
+                    <span class="count"><span class="total">0</span></span>
+                    <img class="icon" src="images/timer.png" />
+                </div>
+                                    <a class="save_to_cloud hidden" title="Save Data to the Cloud?"><i>&#8679;</i></a>
+                    <a class="load_from_cloud hidden" title="Load Data from the Cloud?"><i>&#8681;</i></a>
+                    <a class="delete_savedata hidden" title="Delete All Save Data?"><i>&times;</i></a>
+                            </div>
+
+            <div class="overview main"></div>
+
+            <div class="midwrap"></div>
+
+            <div class="buttons">
+                <div class="controls">
+                    <a class="control speed play hidden" data-control="play" title="Play">Play</a>
+                    <a class="control speed pause hidden" data-control="pause" title="Pause">Pause</a>
+                    <a class="control speed slow hidden" data-control="slow" title="Slow">Slow</a>
+                    <a class="control speed fast hidden" data-control="fast" title="Fast">Fast</a>
+                    <a class="control speed warp hidden" data-control="warp" title="Warp">Warp</a>
+                    <a class="control restart hidden" data-control="restart"><span>Re-use Same Starters</span></a>
+                    <a class="control new hidden" data-control="new"><span>Use New Starters</span></a>
+                    <a class="control stop hidden" data-control="stop" title="Stop"><span>Stop?</span></a>
+                    <a class="control start hidden" data-control="start" title="Start"><span>Start</span></a>
+                </div>
+                <div class="select-pokemon">
+                    <span class="loading">Loading</span>
+                </div>
+                <div class="filter-pokemon hidden" data-target="buttons">
+                    <div class="wrap">
+                        <div class="title">Filters</div>
+                                                    <div class="filter generations" data-filter="gen" data-max="9">
+                                <label class="label">Gen</label>
+                                <div class="options" data-count="10">
+                                    <a class="option" data-gen="all">All</a>
+                                                                                                                    <a class="option" data-gen="1">1</a>
+                                                                                                                    <a class="option" data-gen="2">2</a>
+                                                                                                                    <a class="option" data-gen="3">3</a>
+                                                                                                                    <a class="option" data-gen="4">4</a>
+                                                                                                                    <a class="option" data-gen="5">5</a>
+                                                                                                                    <a class="option" data-gen="6">6</a>
+                                                                                                                    <a class="option" data-gen="7">7</a>
+                                                                                                                    <a class="option" data-gen="8">8</a>
+                                                                                                                <a class="option" data-gen="x">X</a>
+                                    <a class="option" data-gen="r">&infin;</a>
+                                </div>
+                            </div>
+                                                <div class="filter types" data-filter="type">
+                            <label class="label">Type</label>
+                            <div class="options"></div>
+                        </div>
+                        <div class="more">
+                            <a class="button add-ditto hidden" title="Add a Ditto"><span>Add Ditto</span></a>
+                            <a class="button add-super-ditto hidden" title="Add a Super Ditto"><span>Add Super Ditto</span></a>
+                            <a class="button add-arceus hidden" title="Add an Arceus"><span>Add Arceus</span></a>
+                            <a class="button enter-seed" title="Enter Starter Seed"><span>Enter Seed</span></a>
+                            <a class="button repeat-seed hidden" title="Repeat Last Seed"><span>Repeat Seed</span></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="starter-pokemon hidden">
+                    <div class="wrap">
+                        <p class="seed">&hellip;</p>
+                    </div>
+                </div>
+                <div class="info links">
+                                            <a class="link" data-tab="about">about</a>
+                        <a class="link" data-tab="help">help</a>
+                        <a class="link" data-tab="credits">credits</a>
+                        <a class="link" data-tab="privacy">privacy</a>
+                                        <a class="link icon reddit" href="https://www.reddit.com/r/pokebox/" target="_blank" title="Check out our Subreddit!"><span>reddit</span></a>
+                    <a class="link icon discord" href="https://discord.gg/8jsSYt5" target="_blank" title="Join us on Discord!"><span>discord</span></a>
+                    <a class="link pokedex hidden wait" data-tab="pokedex"><span>pokédex</span><span>&hellip;</span></a>
+                                            <span class="count score hidden wait" title="Box Value (Score)"><span class="unit">&#x20bd;</span> <span class="total">-</span></span>
+                                    </div>
+                                    <div class="info hidden" data-tab="about">
+                        <div>
+    <div class="group">
+        <h2>What is PokéBox?</h2>
+        <p>
+            PokéBox is a browser-based simulator that revolves around the biomes, ecosystems,
+            relationships, and lifecycles of Pokémon. The basic goal of the simulator is to encounter
+            <em>all</em> the different species and forms of Pokémon using a only single box and a handful
+            of starter Pokémon as seeds. Your starter Pokémon can be used to attract other similar species,
+            and then those can be used to attract even more. Check your Pokédex after playing for a bit to
+            see how many species you've registered so far!
+        </p>
+    </div>
+    <div class="group modes">
+        <h2>Available Play Modes</h2>
+        <ul>
+            <li><a class="active">Normal Mode</a> - Complete your Pokédex! Use starter Pokémon to attract new species, then chain to find them all! <em>(default)</em></li>
+            <li><a href="free-mode/">Free Mode</a> - No Limits! Any basic Pokémon can be added to your box, but records are not saved.</li>
+            <li class="gen-filters">
+                <p style="margin-bottom: 4px;"><a>Filters</a> - Use the Normal Mode filters below if you only want to encounter Pokémon up to a certain generation:</p>
+                <ul>
+                    <li><a href="gen1/">Gen 1</a></li>
+                    <li><a href="gen2/">Gen 2</a></li>
+                    <li><a href="gen3/">Gen 3</a></li>
+                    <li><a href="gen4/">Gen 4</a></li>
+                    <li><a href="gen5/">Gen 5</a></li>
+                    <li><a href="gen6/">Gen 6</a></li>
+                    <li><a href="gen7/">Gen 7</a></li>
+                    <li><a href="gen8/">Gen 8</a></li>
+                    <li><a class="active">Gen X</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>                    </div>
+                    <div class="info hidden" data-tab="help">
+                        <div>
+    <div class="group">
+        <h2>Basic Mechanics</h2>
+        <p>
+            Add up to 10 different Pokémon to your box and then press play.  Watch as they grow, evolve,
+            multiply, and eventually die leaving their offspring to continue the cycle. The kinds of Pokémon
+            you add to a box can alter its appeal to other species and can greatly affect its resident's growth
+            and breeding behaviours over time.  Whenever you're ready, STOP the simulator then try a different
+            combination of starter Pokémon.
+        </p>
+        <p>
+            The basic goal of the simulator is to encounter <em>all</em> the different species and forms
+            of Pokémon using a single box and only a handful of starter Pokémon as seeds. Your starter Pokémon
+            can be used to attract other similar species, and then those can be used to attract even more.
+            Check your Pokédex after playing for a bit to see how many species you've registered so far!
+        </p>
+    </div>
+    <div class="group">
+        <h2>Advanced Mechanics</h2>
+        <div class="group">
+            <h3>Type Appeal</h2>
+            <p>
+                Each species that lives in your box contributes to the global Type Appeal values in some way.
+                Fire types, for example, attract other Fire types...  but they also <em>repel</em> Bug, Grass, and Steel types due to their type-advantage over them.
+                Likewise because Fire types are weak to Water attacks themselves, they may inadvertently attract Water type Pokémon to the box as well.
+                All basic Pokémon influence a box's appeal values but fully-evolved and special or legendary Pokémon influence it a bit more.
+            </p>
+            <p>
+                Type Appeal values affect many things, but the most notable are evolutions and breeding.
+                Some Pokémon may find a certain type more or less appealing, and may either evolve into or produce offspring with a new typing to compensate.
+                If the appeal values are just-right, Pikachu can evolve into Psychic types, Ninetales can give birth to Ice types, and Gloom can decide to shed their Poison type to become pure Grass.
+            </p>
+        </div>
+        <div class="group">
+            <h3>Evolution Mechanics</h3>
+            <p>
+                Most Pokémon grow and eventually evolve on their own, but some require very specific conditions to reach their next stage of development.
+            </p>
+            <ul>
+                <li>Level-up evolutions trigger naturally when a Pokémon reaches a certain growth level</li>
+                <li>Happiness evolutions trigger when a Pokémon's favourite type(s) have high appeal</li>
+                <li>Affection evolutions trigger when a Pokémon is surrounded a lot of family</li>
+                <li>Type-appeal evolutions trigger when an elemental type has very high appeal</li>
+                <li>Burst and Mega evolutions trigger when a Pokémon has reached the end of its life</li>
+                <li>Other more obscure methods of evolution may exist as well...</li>
+            </ul>
+        </div>
+    </div>
+    <div class="group">
+        <h2>Legacy Save Data</h2>
+        <p>
+                        If you used PokéBox before it was upgraded to use SSL and be more secure, your
+            old save data will not be seen by the current version of the app. Please use the
+            dedicated <a href="http://pokebox.net/migrate.php">migration page</a> to push
+            your data up into the cloud and then come back here to pull it back down again.
+            Apologies for the inconvenience but thank you for your understanding.
+        </p>
+    </div>
+    <div class="group hotkeys">
+        <h2>Keyboard Controls</h2>
+        <div>
+            <h3>During Starter Selection</h3>
+            <ul>
+                <li>On the starter selection screen, use <span class="key">[TAB]</span> and the <span class="key">[ARROW KEYS]</span> to navigate</li>
+                <li><span class="key">[TAB]</span> shifts focus from one panel to another (starters, gen filters, then type filters)</li>
+                <li>Starter Panel: Use all four <span class="key">[ARROW KEYS]</span> to navigate buttons, <span class="key">[SPACEBAR]</span> to select a Pokémon as a starter</li>
+                <li>Filter Panels: Use <span class="key">[LEFT ARROW]</span> and <span class="key">[RIGHT ARROW]</span> to navigate filters, <span class="key">[UP ARROW]</span> and <span class="key">[DOWN ARROW]</span> to jump to first/last option</li>
+                <li><span class="key">[S]</span> can be used to bring up the seed / starter prompt (type a name or fragment and hit <span class="key">[ENTER]</span>)</li>
+                <li><span class="key">[R]</span> can be used to repeat the most recently used starter seed (assuming one exists)</li>
+                <li><span class="key">[D]</span> can be used to add a Ditto (once unlocked)</li>
+                <li><span class="key">[SHIFT] + [D]</span> can be used to a add Super Ditto (once unlocked)</li>
+                <li><span class="key">[A]</span> can be used to add Arceus (once unlocked)</li>
+                <li><span class="key">[BACKSPACE]</span> removes last-added starter Pokémon, can be used repeatedly</li>
+                <li><span class="key">[ENTER]</span> starts the simulation with the selected starter Pokémon</li>
+            </ul>
+        </div>
+        <div>
+            <h3>While Simulation is Running</h3>
+            <ul>
+                <li><span class="key">[SPACEBAR]</span> or <span class="key">[ENTER]</span> pauses and unpauses the simulation</li>
+                <li><span class="key">[ESC]</span> or <span class="key">[BACKSPACE]</span> stops and then ends the simulation</li>
+                <li><span class="key">[RIGHT ARROW]</span> can be used to speed up the simulation</li>
+                <li><span class="key">[LEFT ARROW]</span> can be used to slow down the simulation</li>
+            </ul>
+        </div>
+        <div>
+            <h3>After Simulation has Ended</h3>
+            <ul>
+                <li><span class="key">[LEFT ARROW]</span> continues to the selection screen w/ same starters</li>
+                <li><span class="key">[RIGHT ARROW]</span> or <span class="key">[BACKSPACE]</span> or <span class="key">[ENTER]</span> continues to selection screen w/ new starters</li>
+            </ul>
+        </div>
+        <div>
+            <h3>Other Shortcuts</h3>
+            <ul>
+                <li><span class="key">[~]</span> key can be used to autoscroll to main overview area</li>
+                <li><span class="key">[SPACEBAR]</span> or <span class="key">[ENTER]</span> can be used to dismiss popup messages</li>
+                <li>Pokédex cannot be navigated by keyboard yet (sorry)</li>
+            </ul>
+        </div>
+    </div>
+    <div class="group">
+        <h2>Need More Help?</h2>
+        <p>
+            If you have any questions or feedback about the simulator at all, please
+            <a href="https://discord.gg/8jsSYt5" target="_blank">join us on Discord</a>
+            and let us know your thoughts.  We look forward to hearing from you!
+        </p>
+    </div>
+</div>                    </div>
+                    <div class="info hidden" data-tab="credits">
+                        <div>
+    <div class="group">
+        <h2>Credits</h2>
+        <p>
+            Pokémon is the property of Game Freak / Nintendo and this simulator is not official, endorsed, or otherwise affiliated with either company in any way.
+        </p>
+        <p>
+            This simulator was programmed by myself (Adrian Marceau) and was started in January of 2018.<br />
+            You can check out my other website <a class="link" target="_blank" href="http://plutolighthouse.net/">PlutoLighthouse.NET</a> for more of my work,
+            my fangame <a class="link" target="_blank" href="http://prototype.mmrpg-world.net/">Mega Man RPG Prototype</a> for something more goal-oriented,
+            or my profiles on <a class="link" target="_blank" href="https://twitter.com/adrianmarceau">Twitter</a>
+            / <a class="link" target="_blank" href="https://github.com/AdrianMarceau">GitHub</a> to see what else I'm up to.
+            Feel free to send me a message and let me know what you think.  :)
+        </p>
+        <p>
+            Sprites for all official Pokémon were collected from Veekun's download page: <br />
+            <a class="link" target="_blank" href="https://veekun.com/dex/downloads">https://veekun.com/dex/downloads</a> <br />
+        </p>
+        <p>
+            Base stats and attributes for all official Pokémon were collected from Zarel's Pokémon Showdown repo: <br />
+            <a class="link" target="_blank" href="https://github.com/Zarel/Pokémon-Showdown/blob/master/data/pokedex.js">https://github.com/Zarel/Pokémon-Showdown/blob/master/data/pokedex.js</a>
+        </p>
+        <p>
+            Box-sized sprites for Gen 8 Pokémon (because the official one are too big for the app) are credited to: <br />
+            The <a class="link" target="_blank" href="https://docs.google.com/spreadsheets/d/1acgzAjh0dnFRQnjZu8kSjS177rKCzpFfEHRLtwuuXRU/edit#gid=0">Gen8 Sprite Project</a>
+            via the <a class="link" target="_blank" href="https://www.smogon.com/forums/threads/sword-shield-sprite-project.3647722/">Smogon Forums</a> community
+            and compiled by <a class="link" target="_blank" href="https://www.deviantart.com/leparagon/art/Gen-8-Icon-sprites-40x30-823261656">leparagon</a>
+        </p>
+        <p>
+            Custom sprites for any new forms and/or unofficial Pokémon were created by the artists below and provided with permission to use in PokéBox:
+        </p>
+        <ul>
+            <li>
+                <strong>Ageman20XX / Adrian Marceau</strong><br />
+                <a href="http://plutolighthouse.net/" target="_blank">http://plutolighthouse.net/</a><br />
+                <em>
+                    <span title="Baby Kangaskhan">Kangaby</span>,
+                    <span title="Baby Meowth">Meowzy</span> (x2),
+                    <span title="Baby Grimer">Oozby</span> (x2),
+                    <span title="Baby Tauros/Miltank">Kalfling</span>,
+                    <span title="Baby Pansage/Pansear/Panpour">Elemonk</span>,
+                    <span title="Baby Rhydon">Rhydoll</span>,
+                    <span title="Baby Aerodactyl">Pterabite</span>,
+                    <span title="Baby Maractus">Succulite</span>,
+                    Estrus Nidoqueen, Burst Machamp,
+                    Mega Girafarig,
+                    Frilled Heliolisk, Zenith Marshadow,
+                    Snow Burmy, Snow Wormadam, Bubble Burmy, Bubble Wormadam,
+                    Cloudy Castform, Rocky Castform,
+                    Pumpkaboo Sizes (x4), Gourgeist Sizes (x4),
+                    Spinda Patterns (x6), Kecleon Colours (x11), Genesect Drives (x5), Silvally Types (x18),
+                    Ms. Mime, Hippopotas (F), Hippowdon (F),
+                    Proto Ambipom, Proto Weavile,
+                    Beta Ekans, Beta Arbok, Beta Munchlax, Beta Snorlax,
+                    Shadow Entei, Shadow Celebi, Shadow Latios,
+                    Gold Ho-oh, Silver Suicine, Cystal Onix,
+                    <del title="Replaced with Super Ditto">Shiny Ditto</del>,
+                    <del title="Recreated by Corvos">Meltan</del>,
+                    <del title="Recreated by Corvos as Mega Politoed">Proto Politoed</del>
+                </em>
+            </li>
+            <li>
+                <strong>Corvos / C. Tyler Corbett</strong><br />
+                <a href="https://ctcorbett.tumblr.com/" target="_blank">https://ctcorbett.tumblr.com/</a><br />
+                <em>
+                    <span title="Baby Ponyta">Unicolt</span>,
+                    <span title="Baby Growlithe">Embark</span>,
+                    <span title="Baby Lickitung">Tungzel</span>,
+                    <span title="Baby Girafarig">Twintied</span>,
+                    <span title="Weepinbell Evo">Meandrabel</span>,
+                    <span title="Qwillfish Evo">Buzzqwill</span>,
+                    <span title="Originally Proto Politoed">Mega Politoed</span>,
+                    Meltan, Melmetal,
+                    <span title="Ditto Evo">Super Ditto</span>,
+                    Zygarde Cell, Zygarde Core
+
+                </em>
+                <p style="font-size: 10px; color: #7a7a7a;">
+                    * Minor edits and collaboration with Ageman20XX, originals can be found on
+                    <a href="https://dribbble.com/T-Co" target="_blank">Tyler's Dribbble Portfolio</a>
+                </p>
+            </li>
+            <li>
+                <strong>PTGigi</strong><br />
+                <a href="http://ptgigi.com/" target="_blank">http://ptgigi.com/</a><br />
+                <em>
+                    <span title="Baby Tangela">Tanglet</span>,
+                    <span title="Baby Doduo">Dododo</span>,
+                    <span title="Baby Goldeen">Heirfry</span>,
+                    <span title="Baby Vulpix">Kittri</span> (x2),
+                    Primal Dialga, Primal Palkia,
+                    Proto Hoppip, Proto Skiploom, Proto Jumpluff,
+                    Proto Aipom, Proto Sneasel, Proto Remoraid, Proto Octillery,
+                    Cloakless Burmy,
+                    Shadow Mewtwo, Shadow Mega Mewtwo (x2), Shadow Lugia
+                </em>
+                <p style="font-size: 10px; color: #7a7a7a;">
+                    * Minor edits by Ageman20XX, originals can be found on
+                    <a href="http://gigisartdump.smackjeeves.com/comics/2639720/sprites-for-pokebox/" target="_blank">Gigi's Art Dump</a>
+                </p>
+            </li>
+            <li>
+                <strong>MBM / MegaBossMan</strong> <br />
+                <em>
+                    <span title="Baby Paras">Paramite</span>
+                </em>
+                <p style="font-size: 10px; color: #7a7a7a;">
+                    * Minor edits by Ageman20XX
+                </p>
+            </li>
+        </ul>
+    </div>
+    <div class="group">
+        <h2>Dependencies</h2>
+        <p>
+            The front-end code is fully custom but makes heavy use of the ever-popular jQuery library <br />
+            <a class="link" target="_blank" href="http://jquery.com/">http://jquery.com/</a>
+        </p>
+        <p>
+            The back-end script and stylesheet compression uses the minify classes by Mattias Mullie <br />
+            <a class="link" target="_blank" href="https://github.com/matthiasmullie/minify">https://github.com/matthiasmullie/minify</a>
+        </p>
+    </div>
+</div>                    </div>
+                    <div class="info hidden" data-tab="privacy">
+                        <div>
+    <div class="group">
+        <h2>Privacy Policy</h2>
+        <p>
+            Pokébox collects anonymous usage data via Google Analytics but does not otherwise access or store any kind of personal information on its individual users.
+            The usage data that is collected via Google Analytics is completely private and will not be shared with any other user or with any third parties.  Any other
+            data generated through the standard use of this application is stored locally, on the user's browser, and is inaccessible to the game creator, developer, or
+            any other related parties. The developer - Ageman20XX / Adrian Marceau - respects user privacy, and will not under any condition attempt to access this data,
+            distribute this data, or use this data in any fashion without the express permission of the user, and only to assist the user with application related issues.
+            If such data were to be collected in the process of assisting a user, said data would be destroyed promptly following a successful resolution of the issues.
+        </p>
+    </div>
+</div>                    </div>
+                                <div class="info hidden" data-tab="pokedex">
+                    <div>
+    <div class="group pokedex">
+        <h2>Global Pokédex</h2>
+        <div class="filter-pokemon hidden" data-target="pokedex">
+            <div class="wrap">
+                <div class="title">Filters</div>
+                                    <div class="filter generations" data-filter="gen" data-max="9">
+                        <label class="label">Gen</label>
+                        <div class="options">
+                                                                                                                        <a class="option" data-gen="1">1</a>
+                                                                                            <a class="option" data-gen="2">2</a>
+                                                                                            <a class="option" data-gen="3">3</a>
+                                                                                            <a class="option" data-gen="4">4</a>
+                                                                                            <a class="option" data-gen="5">5</a>
+                                                                                            <a class="option" data-gen="6">6</a>
+                                                                                            <a class="option" data-gen="7">7</a>
+                                                                                            <a class="option" data-gen="8">8</a>
+                                                                                            <a class="option" data-gen="x">X</a>
+                                                    </div>
+                    </div>
+                                <div class="filter types" data-filter="type">
+                    <label class="label">Type</label>
+                    <div class="options"></div>
+                </div>
+            </div>
+        </div>
+        <ul class="list"></ul>
+                    <div class="filter-pokemon lower hidden" data-target="pokedex">
+                <div class="wrap">
+                    <div class="filter modes" data-filter="mode">
+                        <label class="label">Mode</label>
+                        <div class="options">
+                            <a class="option" data-mode="legacy">Legacy</a>
+                            <a class="option" data-mode="modern">Modern</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="totals">
+            <span class="unlocked">0</span>
+            <span class="showing">0</span>
+            <span class="percent">0%</span>
+        </div>
+    </div>
+</div>                </div>
+            </div>
+
+        </div>
+        <script type="text/javascript" src="scripts/viewport-min-width.js"></script>
+        <script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="scripts/jquery.scrollbar.min.js"></script>
+        <script type="text/javascript" src="scripts/polyfill.localstorage.js"></script>
+        <script type="text/javascript" src="scripts/script.min.js?v1.2.31"></script>
+        <script type="text/javascript">
+
+            // Define the global date and version number vars
+            window.PokemonAppLastUpdated = '2021-11-02';
+            window.PokemonAppVersionNumber = '1.2.31';
+            window.PokemonAppDebugMode = false;
+            window.PokemonAppFreeMode = false;
+            window.PokemonAppBaseHref = 'https://pokebox.net/';
+            window.PokemonAllowedGenerationsMax = 9;
+            
+        </script>
+                    <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-117911952-1"></script>
+            <script>
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'UA-117911952-1');
+            </script>
+            </body>
+</html>
